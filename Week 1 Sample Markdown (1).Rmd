@@ -1,0 +1,138 @@
+---
+title: "ana 515 ass-2"
+author: "QUAZI NASHRA AHMAD"
+date: "2024-06-16"
+output:
+  html_document:
+    toc: true
+    theme: spacelab
+
+---
+
+``` {r, echo = FALSE}
+#This information is about train journeys made on National Rail in the uk and collected national railway internal ticketing system or anomynous customer purchase data.Here are some research questions this data could answer:How do ticket prices vary depending on route, travel time, and ticket type (advance purchase vs. walk-up)?What are the most popular travel routes and times?The data would likely be saved in a flat file format, possibly a CSV (Comma-Separated Values) file
+```
+
+```{r setup, include = FALSE}
+#The include = FALSE function hides both the code and output in my output document. 
+```
+
+```{r setup1,include=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+install.packages("dplyr")
+library(dplyr)
+```
+
+
+
+
+
+```{r setup2,include=FALSE}
+getwd()  # Check current working directory
+setwd("C:/Users/quazi/Downloads")  # Set new working directory
+train_data_info <- read.csv("railway.csv")
+head(train_data_info)
+
+```
+
+```{r setup3, include=FALSE}
+library(dplyr)
+uk_train <- train_data_info %>%
+  rename(
+    Tran_id = Transaction.ID,
+    Train_status = Journey.Status
+  )
+
+# View the modified dataframe
+head(uk_train)
+
+  
+```
+
+
+```{r setup4, include=FALSE}
+#Filtering the renamed data table by removing columns that don't add much value
+
+library(dplyr)
+
+
+# Corrected expression with select() and pipe operator
+train_filtered1 <- train_data_info %>%
+  select(-Refund.Request) %>%
+  head()
+  
+```
+
+```{r setup5,include=FALSE}
+
+# Using dplyr to filter and arrange data
+  library(dplyr)
+Price_filtered1 <- train_data_info %>%
+  filter(Price >7) %>%
+  arrange(desc(Price))
+
+# Print the filtered and arranged dataframe
+print(Price_filtered1)
+
+```
+
+```{r setup10, include=FALSE}
+
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+install.packages("knitr")    # Ensure knitr is installed
+library(knitr)               # Load knitr package
+```
+
+```{r setup11,include=FALSE}
+update.packages("knitr")
+update.packages("rmarkdown")
+```
+
+
+
+```{r setup12,include=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+library(dplyr)
+library(knitr)
+
+Columns_details <- data.frame(Columns=c(colnames(train_data_info)),
+Description = c("BankTransaction ID","Purchasing date of tickets",
+  "Purchasing time of tickets",	" Type of purchase of tickets",	
+  "Payment Method by credit card or contactless","Type of card based on
+  adult/senior","Types of Ticket Class","Ticket Type based on categories ",
+  "Price of ticket"," Name of Departure Station","Date of Journey",
+  "Departure Time","Arrival Time","Actual Arrival Time ",
+"Journey Status",	"Refund Request"))
+  
+kable(Columns_details, caption = "UK_TRAIN Variables & Definitions")
+  
+```
+
+
+
+```{r setup9, include = FALSE}
+#this next line is creating a subset called 'ticket type' of the train data
+Ticket_type1 <- train_data_info %>% 
+  filter(Ticket.Type == "Advance")
+```
+
+```{r setup8, include = FALSE}
+#this next line is creating a subset called 'ticket type' of the train data
+Ticket_type2 <- train_data_info %>% 
+  filter(Ticket.Type == "Off-Peak")
+```
+
+
+```{r setup6, include=FALSE}
+#Creating summary statistics and Printing it
+summary_stats <- summary(Ticket_type1)
+print(summary_stats)
+```
+
+```{r setup7, include=FALSE}
+#Creating summary statistics and Printing it
+summary_stats1 <- summary(Ticket_type2)
+print(summary_stats1)
+```
+
+
